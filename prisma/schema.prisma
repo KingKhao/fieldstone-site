@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUOTED
+  WON
+  LOST
+}
+
+enum ProjectType {
+  KITCHEN
+  BATHROOM
+  ADDITION
+  WHOLE_HOME
+  OTHER
+}
+
+// The core entity this whole site exists to demonstrate: a captured lead
+// from the multi-step estimate wizard (or a simpler contact form), tracked
+// through a sales pipeline in the admin CRM.
+model Lead {
+  id          String      @id @default(cuid())
+  name        String
+  email       String
+  phone       String
+  projectType ProjectType @default(OTHER)
+  budgetRange String?
+  timeline    String?
+  zip         String?
+  message     String?
+  status      LeadStatus  @default(NEW)
+  source      String // which form/page it came from, e.g. "estimate-wizard", "contact-page"
+
+  // TCPA SMS-marketing consent — only ever set by an explicit opt-in
+  // checkbox, never inferred from providing a phone number to be contacted
+  // about the project itself.
+  smsConsent        Boolean   @default(false)
+  smsConsentVersion String?
+  smsConsentAt      DateTime?
+
+  notes     LeadNote[]
+  createdAt DateTime   @default(now())
+
+  @@index([createdAt])
+  @@index([status])
+}
+
+// Permanent internal notes an admin adds while working a lead — never shown
+// to the visitor.
+model LeadNote {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([leadId])
+}
+
+// A completed project shown in the gallery, with a genuine matched
+// before/after image pair.
+model Project {
+  id          String      @id @default(cuid())
+  title       String
+  category    ProjectType @default(KITCHEN)
+  beforeImage String
+  afterImage  String
+  description String
+  location    String?
+  featured    Boolean     @default(false)
+  sortOrder   Int         @default(0)
+  createdAt   DateTime    @default(now())
+
+  @@index([sortOrder])
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  location  String?
+  quote     String
+  rating    Int      @default(5)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([sortOrder])
+}
+
+// DB-backed from day one — a Vercel env-var admin password already caused a
+// real, unrecoverable lockout on a sibling project. See lib/session.ts.
+model Admin {
+  id           String @id @default(cuid())
+  username     String @unique
+  passwordHash String
+}
+
+// Generic key/value store for admin-editable site content (hero copy,
+// contact info, service area, etc.).
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+// Backs rate limiting on public forms and admin login — keyed by a salted
+// hash of IP, never the raw IP.
+model RateLimitHit {
+  id        String   @id @default(cuid())
+  bucket    String
+  keyHash   String
+  createdAt DateTime @default(now())
+
+  @@index([bucket, keyHash, createdAt])
+}

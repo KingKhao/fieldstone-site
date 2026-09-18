@@ -120,7 +120,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-clay">See the difference</p>
           <h2 className="mt-3 font-serif text-3xl text-charcoal sm:text-4xl">Real projects. Real transformations.</h2>
-          <p className="mt-4 text-charcoal-muted">Drag the slider to see what a Fieldstone remodel actually looks like, start to finish.</p>
+          <p className="mt-4 text-charcoal-muted">Tap before and after to see what a Fieldstone remodel actually looks like, start to finish.</p>
         </div>
         <div className="mt-12 grid gap-10 sm:grid-cols-2">
           <div>

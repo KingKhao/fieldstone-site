@@ -8,26 +8,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // "Fieldstone" palette: warm quarried-stone neutrals, a burnt-clay
-        // accent (the brand's one saturated color, used sparingly for CTAs
-        // and highlights), and a muted brass for small decorative details.
-        paper: "#F7F4EF",
-        stone: "#EDE7DD",
-        "stone-line": "#DCD3C2",
-        charcoal: "#23201B",
-        // ~6.8:1 on paper — replacement for charcoal/NN opacity text.
-        "charcoal-muted": "#5C554A",
+        // "Fieldstone" palette: cool, professional neutrals with a deep
+        // navy-blue accent (the brand's one saturated color, used sparingly
+        // for CTAs and highlights) and a muted brass for high-end detailing.
+        // Token names (clay/brass) are kept for minimal diff — values below
+        // define the actual on-screen colors.
+        paper: "#F7F8FA",
+        stone: "#E9EDF2",
+        "stone-line": "#D6DCE5",
+        charcoal: "#111A26",
+        // ~7:1 on paper — replacement for charcoal/NN opacity text.
+        "charcoal-muted": "#4E5A68",
         clay: {
-          DEFAULT: "#A0492A",
-          dark: "#7E3A21",
-          light: "#C97A54",
+          DEFAULT: "#1F4E79",
+          dark: "#163A5C",
+          light: "#4A7CAD",
         },
         brass: {
-          DEFAULT: "#9C7A3C",
+          DEFAULT: "#9C8244",
           // ~4.6:1 on paper — use for brass text; DEFAULT is decorative-only.
-          deep: "#7A5E2C",
+          deep: "#7A6430",
         },
-        error: "#8C3A2B",
+        error: "#B3261E",
       },
       fontFamily: {
         serif: ["var(--font-display)", "Georgia", "serif"],

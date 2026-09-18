@@ -20,7 +20,7 @@ export default async function GalleryPage() {
         <p className="text-xs font-semibold uppercase tracking-widest text-clay">Our work</p>
         <h1 className="mt-3 font-serif text-4xl text-charcoal sm:text-5xl">Project Gallery</h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal-muted">
-          Every project here is a real Fieldstone remodel. Drag any photo to see the full before-and-after.
+          Every project here is a real Fieldstone remodel. Tap any photo to see the full before-and-after.
         </p>
       </section>
 

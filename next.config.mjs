@@ -18,6 +18,7 @@ const csp = [
 ].join("; ");
 
 const securityHeaders = [
+  { key: "X-Robots-Tag", value: "noindex, nofollow" },
   { key: "Content-Security-Policy", value: csp },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "X-Content-Type-Options", value: "nosniff" },

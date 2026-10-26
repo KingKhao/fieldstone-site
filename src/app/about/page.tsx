@@ -38,7 +38,7 @@ export default function AboutPage() {
               beautiful renderings and then a completely different experience once the sledgehammers came out.
             </p>
             <p className="mt-4 text-charcoal-muted">
-              Fourteen years later, Fieldstone is a small, deliberately-not-huge design-build team serving{" "}
+              In this fictional business story, Fieldstone is a small design-build team serving{" "}
               {SERVICE_AREA}. We take on a limited number of kitchen and bathroom projects at a time so every
               client gets an actual crew — not a rotating cast of subcontractors meeting each other for the first
               time on your job site.
@@ -70,7 +70,7 @@ export default function AboutPage() {
       <section className="mx-auto max-w-4xl px-6 py-16 text-center sm:py-24">
         <h2 className="font-serif text-3xl text-charcoal sm:text-4xl">Ready to work with us?</h2>
         <p className="mx-auto mt-4 max-w-xl text-charcoal-muted">
-          Tell us about your project and we&apos;ll follow up within one business day.
+          Tell us about your project and this is a simulation; no one will contact you.
         </p>
         <Link
           href="/estimate"

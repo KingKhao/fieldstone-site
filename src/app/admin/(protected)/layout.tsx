@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { getSessionUsername } from "@/lib/session";
 import Link from "next/link";
 import LogoutButton from "@/components/admin/LogoutButton";
 import { SITE_NAME } from "@/lib/site";
@@ -9,7 +11,8 @@ const NAV = [
   { href: "/admin/settings", label: "Site Settings" },
 ];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  if (!(await getSessionUsername())) redirect("/admin/login");
   return (
     <div className="min-h-screen bg-stone">
       <header className="border-b border-stone-line bg-charcoal text-paper">

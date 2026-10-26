@@ -4,7 +4,7 @@ import { SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: `Get a Free Estimate | ${SITE_NAME}`,
-  description: "Tell us about your kitchen or bathroom project and get a response within one business day.",
+  description: "Try a simulated kitchen or bathroom estimate. Nothing is sent or saved.",
 };
 
 export default function EstimatePage() {
@@ -14,7 +14,7 @@ export default function EstimatePage() {
         <p className="text-xs font-semibold uppercase tracking-widest text-clay">Free, no-obligation</p>
         <h1 className="mt-3 font-serif text-4xl text-charcoal sm:text-5xl">Let&apos;s talk about your project</h1>
         <p className="mx-auto mt-4 max-w-xl text-lg text-charcoal-muted">
-          Answer a few quick questions and we&apos;ll follow up within one business day with next steps — no
+          Try the sample questions using fictional details. Nothing is saved or sent, and there is no
           pressure, no canned pricing.
         </p>
       </div>

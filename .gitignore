@@ -40,3 +40,17 @@ next-env.d.ts
 .agents/
 .claude/
 skills-lock.json
+
+# Local credentials, private exports and generated audit/build files
+.env*
+!.env.example
+.vercel/
+.playwright-cli/
+node_modules/
+.next/
+*.tsbuildinfo
+*.csv
+*.db
+*.pem
+*.key
+.scratch*

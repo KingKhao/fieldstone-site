@@ -1,8 +1,11 @@
+import { redirect } from "next/navigation";
+import { getSessionUsername } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
 import SettingsForm from "@/components/admin/SettingsForm";
 import ChangePasswordForm from "@/components/admin/ChangePasswordForm";
 
 export default async function AdminSettingsPage() {
+  if (!(await getSessionUsername())) redirect("/admin/login");
   const { home } = await getSettings();
 
   return (

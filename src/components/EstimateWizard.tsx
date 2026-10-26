@@ -46,24 +46,7 @@ export default function EstimateWizard({ source = "estimate-wizard" }: { source?
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          projectType,
-          budgetRange,
-          timeline,
-          zip,
-          message,
-          smsConsent,
-          smsConsentVersion: SMS_CONSENT_VERSION,
-          source,
-          companyWebsite,
-        }),
-      });
+      const res = { ok: true, json: async () => ({ error: "", demo: true }) }; // Local simulation: no request and no persistence.
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Something went wrong. Please try again.");
@@ -85,9 +68,9 @@ export default function EstimateWizard({ source = "estimate-wizard" }: { source?
             <path d="M20 6 9 17l-5-5" />
           </svg>
         </div>
-        <h3 className="mt-4 font-serif text-2xl text-charcoal">Request sent</h3>
+        <h3 className="mt-4 font-serif text-2xl text-charcoal">Demo request complete</h3>
         <p className="mt-2 text-charcoal-muted">
-          Thanks, {name.split(" ")[0] || "there"} — Fieldstone will follow up within one business day to talk through your project.
+          Demo complete. Nothing was sent or saved, and no real estimate or callback was requested.
         </p>
       </div>
     );
@@ -98,6 +81,7 @@ export default function EstimateWizard({ source = "estimate-wizard" }: { source?
 
   return (
     <div className="rounded-2xl border border-stone-line bg-white p-6 shadow-sm sm:p-8">
+      <p className="mb-4 text-sm text-charcoal-muted">Demo only. Use fictional details; nothing is sent, saved or subscribed.</p>
       {/* Progress */}
       <div className="mb-6 flex items-center gap-2" aria-hidden="true">
         {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
@@ -293,11 +277,11 @@ export default function EstimateWizard({ source = "estimate-wizard" }: { source?
               disabled={submitting}
               className="flex-1 rounded-full bg-clay px-6 py-3 font-semibold text-paper transition-colors hover:bg-clay-dark disabled:opacity-50"
             >
-              {submitting ? "Sending…" : "Send my request"}
+              {submitting ? "Sending…" : "Preview my request"}
             </button>
           </div>
           <p className="mt-4 text-center text-xs text-charcoal-muted">
-            By submitting, you agree to our{" "}
+            This local preview sends nothing. Read our{" "}
             <Link href="/terms" className="underline hover:text-charcoal">Terms</Link> and{" "}
             <Link href="/privacy" className="underline hover:text-charcoal">Privacy Policy</Link>.
           </p>

@@ -1,12 +1,15 @@
+import { redirect } from "next/navigation";
+import { getSessionUsername } from "@/lib/session";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import LeadStatusSelect from "@/components/admin/LeadStatusSelect";
 import NoteForm from "@/components/admin/NoteForm";
 
-export default async function LeadDetailPage({ params }: { params: { id: string } }) {
+export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  if (!(await getSessionUsername())) redirect("/admin/login");
   const lead = await prisma.lead.findUnique({
-    where: { id: params.id },
+    where: { id: (await params).id },
     include: { notes: { orderBy: { createdAt: "desc" } } },
   });
   if (!lead) notFound();

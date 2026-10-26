@@ -24,8 +24,8 @@ export default function ContactForm() {
             <path d="M20 6 9 17l-5-5" />
           </svg>
         </div>
-        <h3 className="mt-4 font-serif text-2xl text-charcoal">Message sent</h3>
-        <p className="mt-2 text-charcoal-muted">Thanks for reaching out — we&apos;ll get back to you within one business day.</p>
+        <h3 className="mt-4 font-serif text-2xl text-charcoal">Demo message complete</h3>
+        <p className="mt-2 text-charcoal-muted">Nothing was sent or saved. Fieldstone is fictional, so no callback or estimate has been requested.</p>
       </div>
     );
   }
@@ -38,11 +38,7 @@ export default function ContactForm() {
         setSubmitting(true);
         setError(null);
         try {
-          const res = await fetch("/api/leads", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, phone, message, source: "contact-page", companyWebsite }),
-          });
+          const res = { ok: true, json: async () => ({ error: "", demo: true }) }; // Local simulation: no request and no persistence.
           const data = await res.json();
           if (!res.ok) {
             setError(data.error || "Something went wrong. Please try again.");
@@ -56,6 +52,8 @@ export default function ContactForm() {
         }
       }}
     >
+      <p className="mb-4 text-sm text-charcoal-muted">Demo only. Use fictional details; nothing is sent, saved or subscribed.</p>
+      <p className="mb-4 text-sm text-charcoal-muted">Demo only. Use fictional details; nothing is sent, saved or subscribed.</p>
       <div className="space-y-4">
         <div>
           <label htmlFor="cf-name" className="mb-1 block text-sm font-medium text-charcoal">Name</label>
@@ -90,10 +88,10 @@ export default function ContactForm() {
         disabled={submitting}
         className="mt-6 w-full rounded-full bg-clay px-6 py-3 font-semibold text-paper transition-colors hover:bg-clay-dark disabled:opacity-50"
       >
-        {submitting ? "Sending…" : "Send Message"}
+        {submitting ? "Sending…" : "Preview message"}
       </button>
       <p className="mt-4 text-center text-xs text-charcoal-muted">
-        By submitting, you agree to our{" "}
+        This local preview sends nothing. Read our{" "}
         <Link href="/terms" className="underline hover:text-charcoal">Terms</Link> and{" "}
         <Link href="/privacy" className="underline hover:text-charcoal">Privacy Policy</Link>.
       </p>

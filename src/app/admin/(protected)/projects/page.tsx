@@ -1,9 +1,12 @@
+import { redirect } from "next/navigation";
+import { getSessionUsername } from "@/lib/session";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import ProjectForm from "@/components/admin/ProjectForm";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function AdminProjectsPage() {
+  if (!(await getSessionUsername())) redirect("/admin/login");
   const projects = await prisma.project.findMany({ orderBy: { sortOrder: "asc" } });
 
   return (

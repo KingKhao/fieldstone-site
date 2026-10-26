@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { getSessionUsername } from "@/lib/session";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import LeadStatusSelect from "@/components/admin/LeadStatusSelect";
@@ -5,6 +7,7 @@ import LeadStatusSelect from "@/components/admin/LeadStatusSelect";
 const STATUSES = ["NEW", "CONTACTED", "QUOTED", "WON", "LOST"] as const;
 
 export default async function AdminPipelinePage() {
+  if (!(await getSessionUsername())) redirect("/admin/login");
   const leads = await prisma.lead.findMany({ orderBy: { createdAt: "desc" } });
   const counts = Object.fromEntries(STATUSES.map((s) => [s, leads.filter((l) => l.status === s).length]));
 

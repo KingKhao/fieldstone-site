@@ -1,66 +1,23 @@
-// Pure token sign/verify logic with no dependency on Prisma or bcrypt, so it
-// can run in the Edge middleware runtime as well as normal server code.
-
-const COOKIE_NAME = "admin_session";
-const SESSION_LENGTH_MS = 1000 * 60 * 60 * 12; // 12 hours
-
-function getSecret() {
-  const secret = process.env.SESSION_SECRET;
-  if (!secret) {
-    throw new Error("SESSION_SECRET is not set in the environment.");
-  }
-  return secret;
+export const SESSION_COOKIE_NAME = "admin_session";
+export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 12;
+export type SessionClaims = { username: string; expires: number; nonce: string };
+const encoder = new TextEncoder();
+function secret() { const value = process.env.SESSION_SECRET; if (!value) throw new Error("SESSION_SECRET is not set."); return value; }
+function hex(buffer: ArrayBuffer) { return Array.from(new Uint8Array(buffer), b => b.toString(16).padStart(2, "0")).join(""); }
+async function sign(payload: string) { const key = await crypto.subtle.importKey("raw", encoder.encode(secret()), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]); return hex(await crypto.subtle.sign("HMAC", key, encoder.encode(payload))); }
+export async function fingerprint(value: string) { return hex(await crypto.subtle.digest("SHA-256", encoder.encode(value))); }
+export async function mintSessionToken(username: string, nonce: string, expires: number) {
+  if (!/^[a-zA-Z0-9_-]{1,80}$/.test(username) || !/^[a-f0-9]{32}$/.test(nonce)) throw new Error("Invalid session identity.");
+  const payload = `${username}.${expires}.${nonce}`; return `${payload}.${await sign(payload)}`;
 }
-
-function toHex(buffer: ArrayBuffer) {
-  return Array.from(new Uint8Array(buffer))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+export async function readSessionClaims(token: string | undefined | null): Promise<SessionClaims | null> {
+  if (!token || token.length > 400) return null;
+  const parts = token.split("."); if (parts.length !== 4) return null;
+  const [username, expiry, nonce, signature] = parts; const expires = Number(expiry);
+  if (!/^[a-zA-Z0-9_-]{1,80}$/.test(username) || !/^[a-f0-9]{32}$/.test(nonce) || !/^[a-f0-9]{64}$/.test(signature) || !Number.isFinite(expires) || expires <= Date.now()) return null;
+  const expected = await sign(`${username}.${expiry}.${nonce}`);
+  let mismatch = 0; for (let i = 0; i < expected.length; i++) mismatch |= expected.charCodeAt(i) ^ signature.charCodeAt(i);
+  return mismatch ? null : { username, expires, nonce };
 }
-
-async function sign(payload: string) {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(getSecret()),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload));
-  return toHex(signature);
-}
-
-export async function createSessionToken(username: string) {
-  const expires = Date.now() + SESSION_LENGTH_MS;
-  const payload = `${username}.${expires}`;
-  const signature = await sign(payload);
-  return `${payload}.${signature}`;
-}
-
-function timingSafeEqual(a: string, b: string) {
-  if (a.length !== b.length) return false;
-  let mismatch = 0;
-  for (let i = 0; i < a.length; i++) {
-    mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return mismatch === 0;
-}
-
-export async function verifySessionToken(token: string | undefined | null): Promise<string | null> {
-  if (!token) return null;
-  const parts = token.split(".");
-  if (parts.length !== 3) return null;
-  const [username, expiresStr, signature] = parts;
-  const payload = `${username}.${expiresStr}`;
-  const expected = await sign(payload);
-
-  if (!timingSafeEqual(signature, expected)) return null;
-
-  const expires = Number(expiresStr);
-  if (Number.isNaN(expires) || Date.now() > expires) return null;
-
-  return username;
-}
-
-export const SESSION_COOKIE_NAME = COOKIE_NAME;
-export const SESSION_MAX_AGE_SECONDS = SESSION_LENGTH_MS / 1000;
+// Edge middleware checks only the signature; all protected data/page handlers must use session.ts.
+export async function verifySessionToken(token: string | undefined | null): Promise<string | null> { return (await readSessionClaims(token))?.username ?? null; }

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://fieldstone-site.vercel.app"),
   title: TITLE,
   description: DESCRIPTION,
+  robots: { index: false, follow: false },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
@@ -43,8 +45,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${display.variable} ${body.variable} font-sans antialiased flex min-h-screen flex-col bg-paper text-charcoal`}>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:block focus:bg-paper focus:p-3">Skip to content</a>
+        <aside className="bg-charcoal px-5 py-3 text-center text-sm text-paper" aria-label="Portfolio demo notice">
+          Fictional business · CVD portfolio demo. Photos, reviews, prices and credentials are illustrative. No real estimates, bookings or messages. <a href="https://clinchvalleydigital.com" className="underline">Clinch Valley Digital</a>
+        </aside>
         <Nav />
-        <main className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1">{children}</main>
         <Footer />
       </body>
     </html>

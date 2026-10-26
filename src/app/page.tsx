@@ -5,9 +5,9 @@ import { getSettings } from "@/lib/settings";
 import { SERVICE_AREA } from "@/lib/site";
 
 const STATS = [
-  { value: "14", label: "Years in business" },
-  { value: "260+", label: "Projects completed" },
-  { value: "4.9★", label: "Average client rating" },
+  { value: "14", label: "Illustrative years" },
+  { value: "260+", label: "Sample project count" },
+  { value: "4.9★", label: "Illustrative rating" },
   { value: "6–10", label: "Week avg. build time" },
 ];
 
@@ -30,7 +30,7 @@ const SERVICES = [
 ];
 
 const PROCESS = [
-  { step: "1", title: "Free estimate", body: "Tell us about your project. We respond within one business day." },
+  { step: "1", title: "Free estimate", body: "Tell us about your project. Demo only — no request is sent." },
   { step: "2", title: "Design & scope", body: "We walk your space, nail down materials, and lock in a fixed price." },
   { step: "3", title: "Build", body: "One dedicated crew, weekly updates, and a realistic timeline you can plan around." },
   { step: "4", title: "Walkthrough", body: "A final walkthrough before we call it done — and a warranty behind it." },
@@ -85,11 +85,11 @@ export default async function HomePage() {
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-charcoal-muted">
               <span className="flex items-center gap-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 text-clay"><path d="M20 6 9 17l-5-5" /></svg>
-                Licensed &amp; insured
+                Example credentials only
               </span>
               <span className="flex items-center gap-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 text-clay"><path d="M20 6 9 17l-5-5" /></svg>
-                2-year workmanship warranty
+                Sample 2-year warranty
               </span>
               <span className="flex items-center gap-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 text-clay"><path d="M20 6 9 17l-5-5" /></svg>
@@ -119,8 +119,8 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-clay">See the difference</p>
-          <h2 className="mt-3 font-serif text-3xl text-charcoal sm:text-4xl">Real projects. Real transformations.</h2>
-          <p className="mt-4 text-charcoal-muted">Tap before and after to see what a Fieldstone remodel actually looks like, start to finish.</p>
+          <h2 className="mt-3 font-serif text-3xl text-charcoal sm:text-4xl">Illustrative projects. Sample transformations.</h2>
+          <p className="mt-4 text-charcoal-muted">Stock images demonstrate a comparison interface; they are not evidence of Fieldstone projects.</p>
         </div>
         <div className="mt-12 grid gap-10 sm:grid-cols-2">
           <div>
@@ -186,8 +186,8 @@ export default async function HomePage() {
       <section className="bg-charcoal py-20 text-paper sm:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-clay-light">Client stories</p>
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl">Don&apos;t just take our word for it</h2>
+            <p className="text-xs font-semibold uppercase tracking-widest text-clay-light">Sample client stories</p>
+            <h2 className="mt-3 font-serif text-3xl sm:text-4xl">Illustrative reviews — not actual customers</h2>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-3">
             {TESTIMONIALS.map((t) => (
@@ -211,7 +211,7 @@ export default async function HomePage() {
       <section className="mx-auto max-w-4xl px-6 py-20 text-center sm:py-28">
         <h2 className="font-serif text-3xl text-charcoal sm:text-4xl">Ready to start your project?</h2>
         <p className="mx-auto mt-4 max-w-xl text-charcoal-muted">
-          Get a free, no-pressure estimate in about two minutes — we&apos;ll follow up within one business day.
+          Get a free, no-pressure estimate in about two minutes — this is a simulation; no one will contact you.
         </p>
         <Link
           href="/estimate"

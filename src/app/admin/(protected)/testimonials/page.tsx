@@ -1,8 +1,11 @@
+import { redirect } from "next/navigation";
+import { getSessionUsername } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import TestimonialForm from "@/components/admin/TestimonialForm";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function AdminTestimonialsPage() {
+  if (!(await getSessionUsername())) redirect("/admin/login");
   const testimonials = await prisma.testimonial.findMany({ orderBy: { sortOrder: "asc" } });
 
   return (

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdminApi } from "@/lib/session";
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const username = await requireAdminApi(req);
   if (!username) return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
 
@@ -14,14 +14,14 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (typeof body?.featured === "boolean") data.featured = body.featured;
   if (typeof body?.sortOrder === "number") data.sortOrder = body.sortOrder;
 
-  const project = await prisma.project.update({ where: { id: params.id }, data });
+  const project = await prisma.project.update({ where: { id: (await params).id }, data });
   return NextResponse.json({ project });
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const username = await requireAdminApi(req);
   if (!username) return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
 
-  await prisma.project.delete({ where: { id: params.id } });
+  await prisma.project.delete({ where: { id: (await params).id } });
   return NextResponse.json({ ok: true });
 }

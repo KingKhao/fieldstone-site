@@ -22,7 +22,7 @@ const config: Config = {
         clay: {
           DEFAULT: "#1F4E79",
           dark: "#163A5C",
-          light: "#4A7CAD",
+          light: "#78A4CE",
         },
         brass: {
           DEFAULT: "#9C8244",
